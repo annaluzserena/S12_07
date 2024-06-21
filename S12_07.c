@@ -2,18 +2,26 @@
 #include <string.h>
 #include <math.h>
 
-void ingresoMateriales(int *cant_aceite, int *cant_filtros, int *cant_llantas, int *cant_frenos);
+void ingresoMateriales(int j, int k, int *cant_aceite, int *cant_filtros, int *cant_llantas, int *cant_frenos);
+void pedido();
 
 int main() {
     // Programa principal
 
-    // Declaración de variables de precios de servicios
+    // Declaración de variables globales del programa
 
-    int precio_ayf, precio_llantas, precio_liq, precio_comp;
+    float precio_ayf, precio_llantas, precio_liq, precio_comp;
+    int stock_aceite = 0, stock_filtros = 0, stock_llantas = 0, stock_frenos = 0;
     int i, b;
 
-    /*for(i = 1; i <= 6; i++) {
-        printf("Día %d - Ingreso de precios");
+    // Repetir incondicional para los 6 días de la semana (lun-sáb)
+    for(i = 1; i <= 6; i++) {
+        // Invocación al procedimiento para el ingreso de stock de materiales inicial
+        printf("Ingreso de stock de materiales inicial del día %d: \n", i);
+        ingresoMateriales(1, 4, &stock_aceite, &stock_filtros, &stock_llantas, &stock_frenos);
+
+        // Ingreso del precio de cada servicio en variables de tipo real con 2 decimales
+        printf("Día %d - Ingreso de precios (decimal con punto 0.00)");
         printf("Ingrese el precio del servicio de cambio de aceite y filtro: ");
         scanf("%.2f", &precio_ayf);
         printf("Ingrese el precio del servicio de reemplazo de llantas: ");
@@ -28,17 +36,17 @@ int main() {
         while(b == 1) {
 
         }
-    }*/
+    }
 
 }
 
-void ingresoMateriales(int *cant_aceite, int *cant_filtros, int *cant_llantas, int *cant_frenos) {
+void ingresoMateriales(int j, int k, int *cant_aceite, int *cant_filtros, int *cant_llantas, int *cant_frenos) {
     // Procedimiento que facilita el ingreso de cantidad de materiales de cada tipo en diferentes presentaciones
     
-    int j, s, op, cant, lectura, mult;
+    int s, op, cant, lectura, mult;
     char material[8];
 
-    for(j = 1; j <= 4; j++) {
+    for(j; j <= k; j++) {
         cant = 0;
 
         switch(j){
@@ -87,16 +95,16 @@ void ingresoMateriales(int *cant_aceite, int *cant_filtros, int *cant_llantas, i
 
         switch(j){
             case 1:
-                *cant_aceite = cant;
+                *cant_aceite += cant;
             break;
             case 2:
-                *cant_filtros = cant;
+                *cant_filtros += cant;
             break;
             case 3:
-                *cant_llantas = cant;
+                *cant_llantas += cant;
             break;
             case 4:
-                *cant_frenos = cant;
+                *cant_frenos += cant;
             break;
         }
 
@@ -107,4 +115,8 @@ void ingresoMateriales(int *cant_aceite, int *cant_filtros, int *cant_llantas, i
     printf("Cantidad de filtros en unidades: %d filtros \n", *cant_filtros);
     printf("Cantidad de llantas en unidades: %d llantas \n", *cant_llantas);
     printf("Cantidad de líquido de frenos en litros: %dl \n", *cant_frenos);
+}
+
+void pedido() {
+
 }
