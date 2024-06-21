@@ -3,7 +3,7 @@
 #include <math.h>
 
 void ingresoMateriales(int j, int k, int *cant_aceite, int *cant_filtros, int *cant_llantas, int *cant_frenos);
-void pedido();
+void pedido(int j, float precio, int *stock1, int *stock2, int *contador, float *total_servicio, float *total_pedido);
 
 int main() {
     // Programa principal
@@ -11,8 +11,11 @@ int main() {
     // Declaración de variables globales del programa
 
     float precio_ayf, precio_llantas, precio_liq, precio_comp;
+    float total_pedido, total_ayf, total_llantas, total_liq, total_comp;
     int stock_aceite = 0, stock_filtros = 0, stock_llantas = 0, stock_frenos = 0;
-    int i, b;
+    int cont_ayf, cont_llantas, cont_liq, cont_comp;
+    int i, b, op;
+    char s[4];
 
     // Repetir incondicional para los 6 días de la semana (lun-sáb)
     for(i = 1; i <= 6; i++) {
@@ -34,7 +37,45 @@ int main() {
         b = 1;
 
         while(b == 1) {
+            printf("Ingrese un servicio utilizado en el pedido: \n");
+            printf("1 - Cambio de aceite y filtro \n");
+            printf("2 - Reemplazo de llantas \n");
+            printf("3 - Revisión y llenado de líquidos \n");
+            printf("4 - Servicio de mantenimiento completo \n");
+            printf("5 - Finalizar pedido \n");
+            scanf("%d", &op);
 
+            switch(op) {
+                case 1:
+                    pedido(1, precio_ayf, &stock_aceite, &stock_filtros, &cont_ayf, &total_ayf, &total_pedido);
+                break;
+                case 2:
+                    pedido(2, precio_llantas, &stock_llantas, 0, &cont_llantas, &total_llantas, &total_pedido);
+                break;
+                case 3:
+                    pedido(3, precio_liq, &stock_frenos, 0, &cont_liq, &total_liq, &total_pedido);
+                break;
+                case 4:
+                    for(k = 1; k <= 3; k++) {
+                        if(k == 1) {
+                            pedido(1, precio_ayf, &stock_aceite, &stock_filtros, &cont_ayf, &total_ayf, &total_pedido);
+                        } else if(k == 2) {
+                            pedido(2, precio_llantas, &stock_llantas, 0, &cont_llantas, &total_llantas, &total_pedido);
+                        } else if(k == 3) {
+                            pedido(3, precio_liq, &stock_frenos, 0, &cont_liq, &total_liq, &total_pedido);
+                        }
+                    }
+                    b = 0;
+                break;
+                case 5:
+                    b = 0;
+                    printf("Pedido finalizado - Detalles: \n");
+                    printf("Servicios: \n");
+                break;
+                default:
+                    printf("Opción inválida.\n");
+                break;
+            }
         }
     }
 
@@ -90,6 +131,9 @@ void ingresoMateriales(int j, int k, int *cant_aceite, int *cant_filtros, int *c
                     printf("Ha finalizado el ingreso de la cantidad de %s. \n", material);
                     s = 0;
                 break;
+                default:
+                    printf("Opción inválida.\n");
+                break;
             }
         }
 
@@ -117,6 +161,8 @@ void ingresoMateriales(int j, int k, int *cant_aceite, int *cant_filtros, int *c
     printf("Cantidad de líquido de frenos en litros: %dl \n", *cant_frenos);
 }
 
-void pedido() {
+void pedido(int j, float precio, int *stock1, int *stock2, int *contador, float *total_servicio, float *total_pedido) {
+    // Procedimiento para el manejo de cada pedido (de uno o más servicios)
+
 
 }
