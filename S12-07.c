@@ -264,20 +264,6 @@ void servicio(int j, int *b, float precio, int *stock1, int *stock2, int *tmp1, 
             break;
     }
 
-    // Incrementar contador específico de servicio usado
-    /*switch (j) {
-        case 1:
-            (*cont_sayf)++;
-            break;
-        case 3:
-            (*cont_sllantas)++;
-            break;
-        case 4:
-            (*cont_sliq)++;
-            break;
-        default:
-            break;
-    }*/
 }
 
 int generarReporteDiario(int dia, float total_dia, int cont_sayf, int cont_sllantas, int cont_sliq, int cont_scomp, int stock_aceite, int stock_filtros, int stock_llantas, int stock_frenos, int tmp_aceite, int tmp_filtros, int tmp_llantas, int tmp_frenos) {
