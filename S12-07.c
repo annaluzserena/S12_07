@@ -39,6 +39,7 @@ int main() {
         // Invocación al procedimiento para el ingreso de stock de materiales inicial
         printf("\nIngreso de stock de materiales inicial del día %d:\n", i);
         ingresoMateriales(1, 4, &stock_aceite, &stock_filtros, &stock_llantas, &stock_frenos);
+        // Almacenamiento del stock inicial de la semana
         if(i == 1) {
             stock_inicial_aceite = stock_aceite;
             stock_inicial_filtros = stock_filtros;
@@ -46,8 +47,10 @@ int main() {
             stock_inicial_llantas = stock_llantas;
         }
         b = 1;
+        // Repetir condicional para la realización de pedidos del día
         while (b == 1) {
             n = 1;
+            // Repetir condicional para cada pedido
             while (n == 1) {
                 printf("\nIngrese un servicio utilizado en el pedido:\n");
                 printf("1 - Cambio de aceite y filtro\n");
@@ -59,6 +62,7 @@ int main() {
 
                 printf("Detalles del pedido: \n");
 
+                // Condicional para el manejo del menú de opciones de servicios con invocación al procedimiento de servicio
                 switch (op) {
                     case 1:
                         servicio(1, &l, precio_ayf, &stock_aceite, &stock_filtros, &tmp_aceite, &tmp_filtros, &total_ayf, &total_pedido);
@@ -125,6 +129,7 @@ int main() {
         // Generar reporte diario al finalizar el día
         generarReporteDiario(i, total_dia, cont_sayf, cont_sllantas, cont_sliq, cont_scomp, stock_aceite, stock_filtros, stock_llantas, stock_frenos, tmp_aceite, tmp_filtros, tmp_llantas, tmp_frenos);
 
+        // Acumular el contador de servicios diario en el contador de servicios semanal
         cont_semana_ayf += cont_sayf;
         cont_semana_llantas += cont_sllantas;
         cont_semana_liq += cont_sliq;
@@ -134,7 +139,7 @@ int main() {
         cont_sllantas = 0;
         cont_sliq = 0;
         cont_scomp = 0;
-        // Acumular el total día en el total semana
+        // Acumular el total día en el total semana  y reiniciar el total día
         total_semana += total_dia;
         total_dia = 0;
     }
@@ -196,7 +201,7 @@ void ingresoMateriales(int j, int k, int *cant_aceite, int *cant_filtros, int *c
         switch (j) {
             case 1:
                 *cant_aceite += cant;
-                printf("Cantidad de litros de aceite: %d \n", *cant_aceite);
+                printf("Cantidad de litros de aceite: %d l\n", *cant_aceite);
                 break;
             case 2:
                 *cant_filtros += cant;
@@ -276,8 +281,10 @@ int generarReporteDiario(int dia, float total_dia, int cont_sayf, int cont_sllan
         strcpy(max_material, "Filtros");
     } else if((tmp_llantas > tmp_aceite) && (tmp_llantas > tmp_filtros) && (tmp_llantas > tmp_frenos)) {
         strcpy(max_material, "Llantas");
-    } else {
+    } else if((tmp_frenos > tmp_aceite) && (tmp_frenos > tmp_filtros) && (tmp_frenos > tmp_llantas)) {
         strcpy(max_material, "Líquido de frenos");
+    } else {
+        strcpy(max_material, "Misma cantidad");
     }
     
     // Función para generar el reporte diario
@@ -301,14 +308,16 @@ int generarReporteSemanal(float total_semana, float total_ayf, float total_llant
     float porcentaje_ayf, porcentaje_llantas, porcentaje_liq, porcentaje_comp, porcentaje_stock_aceite, porcentaje_stock_filtros, porcentaje_stock_llantas, porcentaje_stock_frenos;
     
     // Determinar el servicio que más recaudó en la semana
-    if (total_ayf >= total_llantas && total_ayf >= total_liq && total_ayf >= total_comp) {
+    if (total_ayf > total_llantas && total_ayf > total_liq && total_ayf > total_comp) {
         strcpy(servicio_mas_recaudo, "Cambio de aceite y filtro");
-    } else if (total_llantas >= total_ayf && total_llantas >= total_liq && total_llantas >= total_comp) {
+    } else if (total_llantas > total_ayf && total_llantas > total_liq && total_llantas > total_comp) {
         strcpy(servicio_mas_recaudo, "Reemplazo de llantas");
-    } else if (total_liq >= total_ayf && total_liq >= total_llantas && total_liq >= total_comp) {
+    } else if (total_liq > total_ayf && total_liq > total_llantas && total_liq > total_comp) {
         strcpy(servicio_mas_recaudo, "Revisión y llenado de líquidos");
-    } else {
+    } else if((total_comp > total_ayf) && (total_comp > total_llantas) && (total_comp > total_liq)) {
         strcpy(servicio_mas_recaudo, "Servicio de mantenimiento completo");
+    } else {
+        strcpy(servicio_mas_recaudo, "Misma recaudación.");
     }
 
     // Calcular porcentajes de recaudación por servicio
